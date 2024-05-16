@@ -2,8 +2,12 @@ package org.example.moviespring.controller;
 
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.service.MovieService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +27,9 @@ public class MovieController {
     }
 
     @GetMapping("/getMovie/{id}")
-    public Optional<Movie> getMovie(@PathVariable Long id) {
-        return movieService.getMovieById(id);
+    public ResponseEntity<Movie> getMovie(@PathVariable Long id) {
+        Optional<Movie> movieOptional = movieService.getMovieById(id);
+        return movieOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/getMoviesByReleaseYear/{releaseYear}")

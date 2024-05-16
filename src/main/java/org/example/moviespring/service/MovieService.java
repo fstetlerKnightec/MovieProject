@@ -1,8 +1,7 @@
-package org.example.movieSpring.service;
+package org.example.moviespring.service;
 
-import org.example.movieSpring.model.Movie;
-import org.example.movieSpring.repo.MovieRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.moviespring.model.Movie;
+import org.example.moviespring.repo.MovieRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +12,6 @@ public class MovieService {
 
     private final MovieRepo movieRepo;
 
-    @Autowired
     public MovieService(MovieRepo movieRepo) {
         this.movieRepo = movieRepo;
     }

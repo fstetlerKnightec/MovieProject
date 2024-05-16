@@ -1,6 +1,6 @@
-package org.example.movieSpring.repo;
+package org.example.moviespring.repo;
 
-import org.example.movieSpring.model.Movie;
+import org.example.moviespring.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

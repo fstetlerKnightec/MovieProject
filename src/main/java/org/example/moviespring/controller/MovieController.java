@@ -1,8 +1,7 @@
-package org.example.movieSpring.controller;
+package org.example.moviespring.controller;
 
-import org.example.movieSpring.model.Movie;
-import org.example.movieSpring.service.MovieService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.moviespring.model.Movie;
+import org.example.moviespring.service.MovieService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +13,6 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @Autowired
     public MovieController(MovieService movieService) {
         this.movieService = movieService;
     }

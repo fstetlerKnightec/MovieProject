@@ -29,16 +29,16 @@ public class MovieService {
     }
 
     public List<Movie> getMoviesByReleaseYear(int releaseYear) {
-        return movieRepo.findAll().stream().filter(m -> m.getRelease_year() == releaseYear).toList();
+        return movieRepo.findAll().stream().filter(m -> m.getRELEASEYEAR() == releaseYear).toList();
     }
 
     public Movie updateMovie(Movie movie) {
-        Optional<Movie> newMovie = getMovieById(movie.getId());
+        Optional<Movie> newMovie = getMovieById(movie.getID());
         if (newMovie.isEmpty()) {
             throw new NullPointerException("Could not find object with that ID");
         }
-        newMovie.get().setTitle(movie.getTitle());
-        newMovie.get().setRelease_year(movie.getRelease_year());
+        newMovie.get().setTITLE(movie.getTITLE());
+        newMovie.get().setRELEASEYEAR(movie.getRELEASEYEAR());
         return movieRepo.save(newMovie.get());
     }
 

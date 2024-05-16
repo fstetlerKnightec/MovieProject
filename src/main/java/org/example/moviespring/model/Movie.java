@@ -7,42 +7,39 @@ import jakarta.persistence.*;
 public class Movie {
 
     @Id
-    @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long ID;
 
-    @Column(name = "TITLE")
-    private String title;
+    private String TITLE;
 
-    @Column(name = "RELEASE_YEAR")
-    private int release_year;
+    private int RELEASEYEAR;
 
     public Movie() {
     }
 
     public Movie(Long id, String title, int release_year) {
-        this.id = id;
-        this.title = title;
-        this.release_year = release_year;
+        this.ID = id;
+        this.TITLE = title;
+        this.RELEASEYEAR = release_year;
     }
 
-    public Long getId() {
-        return id;
+    public Long getID() {
+        return ID;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTITLE() {
+        return TITLE;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTITLE(String TITLE) {
+        this.TITLE = TITLE;
     }
 
-    public int getRelease_year() {
-        return release_year;
+    public int getRELEASEYEAR() {
+        return RELEASEYEAR;
     }
 
-    public void setRelease_year(int release_year) {
-        this.release_year = release_year;
+    public void setRELEASEYEAR(int RELEASEYEAR) {
+        this.RELEASEYEAR = RELEASEYEAR;
     }
 }

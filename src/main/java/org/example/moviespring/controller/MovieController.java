@@ -42,9 +42,9 @@ public class MovieController {
         return movieService.addMovie(movie);
     }
 
-    @PutMapping("/updateMovie")
-    public Movie updateMovie(@RequestBody Movie movie) {
-        return movieService.updateMovie(movie);
+    @PutMapping("/updateMovie/{id}")
+    public Movie updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
+        return movieService.updateMovie(movie, id);
     }
 
     @DeleteMapping("/deleteMovie/{id}")

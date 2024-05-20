@@ -1,5 +1,6 @@
 package org.example.moviespring.service;
 
+import org.example.exceptions.ObjectAlreadyExistsException;
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.repo.MovieRepo;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,9 @@ public class MovieService {
     }
 
     public Movie addMovie(Movie movie) {
+        if (movieRepo.findAll().stream().anyMatch(m -> m.getTITLE().equals(movie.getTITLE()))) {
+
+        }
         return movieRepo.save(movie);
     }
 

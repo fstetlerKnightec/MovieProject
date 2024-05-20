@@ -1,8 +1,9 @@
 package org.example.moviespring.service;
 
-import org.example.exceptions.ObjectAlreadyExistsException;
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.repo.MovieRepo;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,11 +26,12 @@ public class MovieService {
         return movieRepo.findById(id);
     }
 
-    public Movie addMovie(Movie movie) {
+    public ResponseEntity<Movie> addMovie(Movie movie) {
         if (movieRepo.findAll().stream().anyMatch(m -> m.getTITLE().equals(movie.getTITLE()))) {
-
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(movie);
         }
-        return movieRepo.save(movie);
+        movieRepo.save(movie);
+        return ResponseEntity.status(HttpStatus.CREATED).body(movie);
     }
 
     public List<Movie> getMoviesByReleaseYear(int releaseYear) {

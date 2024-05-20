@@ -38,7 +38,7 @@ public class MovieController {
     }
 
     @PostMapping("/addMovie")
-    public Movie addMovie(@RequestBody Movie movie) {
+    public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
         return movieService.addMovie(movie);
     }
 

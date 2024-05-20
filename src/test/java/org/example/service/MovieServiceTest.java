@@ -10,11 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
 
@@ -33,11 +31,11 @@ public class MovieServiceTest {
 
         when(movieRepo.save(Mockito.any(Movie.class))).thenReturn(movie);
 
-        Movie savedMovie = movieService.addMovie(movie);
+        ResponseEntity<Movie> savedMovie = movieService.addMovie(movie);
 
-        Assertions.assertEquals(savedMovie.getID(), 1L);
-        Assertions.assertEquals(savedMovie.getTITLE(), "Golden Eye");
-        Assertions.assertEquals(savedMovie.getRELEASEYEAR(), 1999);
+        Assertions.assertEquals(Objects.requireNonNull(savedMovie.getBody()).getID(), 1L);
+        Assertions.assertEquals(savedMovie.getBody().getTITLE(), "Golden Eye");
+        Assertions.assertEquals(savedMovie.getBody().getRELEASEYEAR(), 1999);
     }
 
     @Test

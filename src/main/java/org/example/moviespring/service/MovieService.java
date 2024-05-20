@@ -32,26 +32,25 @@ public class MovieService {
         return movieRepo.findAll().stream().filter(m -> m.getRELEASEYEAR() == releaseYear).toList();
     }
 
-    public Movie updateMovie(Movie movie, Long id) {
-        Movie foundMovie = movieRepo.findById(id).orElseThrow(() -> new NullPointerException("Could not find object with that ID"));
+    public String updateMovie(Movie movie, Long id) {
+        if (movieRepo.findById(id).isEmpty()) {
+            return "Could not find movie with id " + id;
+        }
+        Movie foundMovie = movieRepo.findById(id).get();
 
         foundMovie.setTITLE(movie.getTITLE());
         foundMovie.setRELEASEYEAR(movie.getRELEASEYEAR());
 
-        return movieRepo.save(foundMovie);
-
-//
-//        Optional<Movie> newMovie = getMovieById(movie.getID());
-//        if (newMovie.isEmpty()) {
-//            throw new NullPointerException("Could not find object with that ID");
-//        }
-//        newMovie.get().setTITLE(movie.getTITLE());
-//        newMovie.get().setRELEASEYEAR(movie.getRELEASEYEAR());
-//        return movieRepo.save(newMovie.get());
+        movieRepo.save(foundMovie);
+        return "Successfully updated movie with name " + foundMovie.getTITLE();
     }
 
-    public void deleteMovie(Long id) {
+    public String deleteMovie(Long id) {
+        if (movieRepo.findById(id).isEmpty()) {
+            return "Could not find a movie with that ID";
+        }
+        String name = movieRepo.findById(id).get().getTITLE();
         movieRepo.deleteById(id);
-        System.out.println("Successfully deleted movie with ID " + id);
+        return "Successfully deleted movie with name " + name;
     }
 }

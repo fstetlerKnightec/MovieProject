@@ -3,43 +3,43 @@ package org.example.moviespring.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "movies")
+@Table(name = "MOVIES")
 public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long id;
 
-    private String TITLE;
+    private String title;
 
-    private int RELEASEYEAR;
+    private int releaseYear;
 
     public Movie() {
     }
 
     public Movie(Long id, String title, int release_year) {
-        this.ID = id;
-        this.TITLE = title;
-        this.RELEASEYEAR = release_year;
+        this.id = id;
+        this.title = title;
+        this.releaseYear = release_year;
     }
 
-    public Long getID() {
-        return ID;
+    public Long getId() {
+        return id;
     }
 
-    public String getTITLE() {
-        return TITLE;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTITLE(String TITLE) {
-        this.TITLE = TITLE;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public int getRELEASEYEAR() {
-        return RELEASEYEAR;
+    public int getReleaseYear() {
+        return releaseYear;
     }
 
-    public void setRELEASEYEAR(int RELEASEYEAR) {
-        this.RELEASEYEAR = RELEASEYEAR;
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
     }
 }

@@ -33,9 +33,9 @@ public class MovieServiceTest {
 
         ResponseEntity<Movie> savedMovie = movieService.addMovie(movie);
 
-        Assertions.assertEquals(Objects.requireNonNull(savedMovie.getBody()).getID(), 1L);
-        Assertions.assertEquals(savedMovie.getBody().getTITLE(), "Golden Eye");
-        Assertions.assertEquals(savedMovie.getBody().getRELEASEYEAR(), 1999);
+        Assertions.assertEquals(Objects.requireNonNull(savedMovie.getBody()).getId(), 1L);
+        Assertions.assertEquals(savedMovie.getBody().getTitle(), "Golden Eye");
+        Assertions.assertEquals(savedMovie.getBody().getReleaseYear(), 1999);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class MovieServiceTest {
         List<Movie> movieList = movieService.getMovies();
 
         Assertions.assertNotNull(movieList);
-        Assertions.assertEquals(movieList.get(0).getTITLE(), "Golden Eye");
+        Assertions.assertEquals(movieList.get(0).getTitle(), "Golden Eye");
     }
 
     @Test
@@ -58,7 +58,7 @@ public class MovieServiceTest {
         when(movieRepo.findById(1L)).thenReturn(Optional.of(movie));
         Optional<Movie> foundMovie = movieService.getMovieById(1L);
 
-        Assertions.assertEquals(foundMovie.get().getTITLE(), "Golden Eye");
+        Assertions.assertEquals(foundMovie.get().getTitle(), "Golden Eye");
     }
 
     @Test
@@ -71,8 +71,8 @@ public class MovieServiceTest {
 
         List<Movie> moviesFrom2016 = movieService.getMoviesByReleaseYear(2016);
         Assertions.assertEquals(moviesFrom2016.size(), 2);
-        Assertions.assertEquals(moviesFrom2016.get(0).getTITLE(), "La La Land");
-        Assertions.assertEquals(moviesFrom2016.get(1).getTITLE(), "AnotherMovie");
+        Assertions.assertEquals(moviesFrom2016.get(0).getTitle(), "La La Land");
+        Assertions.assertEquals(moviesFrom2016.get(1).getTitle(), "AnotherMovie");
     }
 
     @Test

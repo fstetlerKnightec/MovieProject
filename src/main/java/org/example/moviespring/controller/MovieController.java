@@ -3,11 +3,9 @@ package org.example.moviespring.controller;
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.service.MovieService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

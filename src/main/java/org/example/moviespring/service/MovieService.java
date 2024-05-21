@@ -27,7 +27,7 @@ public class MovieService {
     }
 
     public ResponseEntity<Movie> addMovie(Movie movie) {
-        if (movieRepo.findAll().stream().anyMatch(m -> m.getTITLE().equals(movie.getTITLE()))) {
+        if (movieRepo.findAll().stream().anyMatch(m -> m.getTitle().equals(movie.getTitle()))) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         movieRepo.save(movie);
@@ -35,7 +35,7 @@ public class MovieService {
     }
 
     public List<Movie> getMoviesByReleaseYear(int releaseYear) {
-        return movieRepo.findAll().stream().filter(m -> m.getRELEASEYEAR() == releaseYear).toList();
+        return movieRepo.findAll().stream().filter(m -> m.getReleaseYear() == releaseYear).toList();
     }
 
     public String updateMovie(Movie movie, Long id) {
@@ -43,19 +43,20 @@ public class MovieService {
             return "Could not find movie with id " + id;
         }
         Movie foundMovie = movieRepo.findById(id).get();
+        String movieNameOrig = foundMovie.getTitle();
 
-        foundMovie.setTITLE(movie.getTITLE());
-        foundMovie.setRELEASEYEAR(movie.getRELEASEYEAR());
+        foundMovie.setTitle(movie.getTitle());
+        foundMovie.setReleaseYear(movie.getReleaseYear());
 
         movieRepo.save(foundMovie);
-        return "Successfully updated movie with name " + foundMovie.getTITLE();
+        return "Successfully updated movie with name " + movieNameOrig;
     }
 
     public String deleteMovie(Long id) {
         if (movieRepo.findById(id).isEmpty()) {
             return "Could not find a movie with that ID";
         }
-        String name = movieRepo.findById(id).get().getTITLE();
+        String name = movieRepo.findById(id).get().getTitle();
         movieRepo.deleteById(id);
         return "Successfully deleted movie with name " + name;
     }

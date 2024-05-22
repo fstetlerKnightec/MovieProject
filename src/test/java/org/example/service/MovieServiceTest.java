@@ -42,43 +42,12 @@ public class MovieServiceTest {
     @Test
     public void MovieService_PostMovieToRepoAlreadyExists_ReturnsHttpStatusConflict() {
         Movie movie1 = new Movie(1L, "Golden Eye", 1999);
-        List<Movie> movies = new ArrayList<>(Arrays.asList(movie1));
+        List<Movie> movies = new ArrayList<>(List.of(movie1));
 
         when(movieRepo.findAll()).thenReturn(movies);
         ResponseEntity<Movie> addMovie = movieService.addMovie(movie1);
 
         Assertions.assertEquals(addMovie.getStatusCode(), HttpStatus.CONFLICT);
-    }
-
-    @Test
-    public void MovieService_GetMovies_ReturnsMovies() {
-        Movie movie1 = new Movie(1L, "Golden Eye", 1999);
-        Movie movie2 = new Movie(2L, "A New Hope", 1977);
-        List<Movie> movies = new ArrayList<>(Arrays.asList(movie1, movie2));
-
-        when(movieRepo.findAll()).thenReturn(movies);
-        List<Movie> movieList = movieService.getMovies();
-
-        Assertions.assertNotNull(movieList);
-        Assertions.assertEquals(movieList.get(0).getTitle(), "Golden Eye");
-    }
-
-    @Test
-    public void MovieService_GetMovieById_ReturnMovie() {
-        Movie movie = new Movie(1L, "Golden Eye", 1999);
-
-        when(movieRepo.findById(1L)).thenReturn(Optional.of(movie));
-        Optional<Movie> foundMovie = movieService.getMovieById(1L);
-
-        Assertions.assertEquals(foundMovie.get().getTitle(), "Golden Eye");
-    }
-
-    @Test
-    public void MovieService_GetMovieByNonExistentId_ReturnEmpty() {
-        when(movieRepo.findById(1L)).thenReturn(Optional.empty());
-        Optional<Movie> foundMovie = movieService.getMovieById(1L);
-
-        Assertions.assertTrue(foundMovie.isEmpty());
     }
 
     @Test

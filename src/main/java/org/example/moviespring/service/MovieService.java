@@ -27,7 +27,7 @@ public class MovieService {
     }
 
     public ResponseEntity<Movie> addMovie(Movie movie) {
-        if (movieRepo.findAll().stream().anyMatch(m -> m.getTitle().equals(movie.getTitle()))) {
+        if (movieRepo.findAll().stream().anyMatch(m -> m.getTitle().equalsIgnoreCase(movie.getTitle()))) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         movieRepo.save(movie);

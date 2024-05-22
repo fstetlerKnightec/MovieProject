@@ -2,12 +2,10 @@ package org.example.moviespring.controller;
 
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.service.MovieService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1")

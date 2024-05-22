@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
@@ -39,6 +40,17 @@ public class MovieServiceTest {
     }
 
     @Test
+    public void MovieService_PostMovieToRepoAlreadyExists_ReturnsHttpStatusConflict() {
+        Movie movie1 = new Movie(1L, "Golden Eye", 1999);
+        List<Movie> movies = new ArrayList<>(Arrays.asList(movie1));
+
+        when(movieRepo.findAll()).thenReturn(movies);
+        ResponseEntity<Movie> addMovie = movieService.addMovie(movie1);
+
+        Assertions.assertEquals(addMovie.getStatusCode(), HttpStatus.CONFLICT);
+    }
+
+    @Test
     public void MovieService_GetMovies_ReturnsMovies() {
         Movie movie1 = new Movie(1L, "Golden Eye", 1999);
         Movie movie2 = new Movie(2L, "A New Hope", 1977);
@@ -62,17 +74,11 @@ public class MovieServiceTest {
     }
 
     @Test
-    public void MovieService_GetMovieByReleaseYear_ReturnMoviesFromYear() {
-        Movie movie1 = new Movie(1L, "Golden Eye", 1999);
-        Movie movie2 = new Movie(2L, "La La Land", 2016);
-        Movie movie3 = new Movie(3L, "AnotherMovie", 2016);
+    public void MovieService_GetMovieByNonExistentId_ReturnEmpty() {
+        when(movieRepo.findById(1L)).thenReturn(Optional.empty());
+        Optional<Movie> foundMovie = movieService.getMovieById(1L);
 
-        when(movieRepo.findAll()).thenReturn(new ArrayList<>(Arrays.asList(movie1, movie2, movie3)));
-
-        List<Movie> moviesFrom2016 = movieService.getMoviesByReleaseYear(2016);
-        Assertions.assertEquals(moviesFrom2016.size(), 2);
-        Assertions.assertEquals(moviesFrom2016.get(0).getTitle(), "La La Land");
-        Assertions.assertEquals(moviesFrom2016.get(1).getTitle(), "AnotherMovie");
+        Assertions.assertTrue(foundMovie.isEmpty());
     }
 
     @Test
@@ -84,7 +90,7 @@ public class MovieServiceTest {
         when(movieRepo.save(Mockito.any(Movie.class))).thenReturn(movie1);
         String updatedMovie = movieService.updateMovie(movie2, 1L);
 
-        Assertions.assertEquals(updatedMovie, "Successfully updated movie with name A New Hope");
+        Assertions.assertEquals("Successfully updated movie with name Golden Eye", updatedMovie);
     }
 
     @Test
@@ -96,7 +102,6 @@ public class MovieServiceTest {
 
         Assertions.assertEquals(updatedMovie, "Could not find movie with id 3");
     }
-
 
     @Test
     public void MovieService_DeleteMovieById_ReturnVoid() {

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,8 @@ public class MovieService {
     }
 
     public ResponseEntity<Movie> addMovie(Movie movie) {
-        if (movieRepo.findAll().stream().anyMatch(m -> m.getTitle().equalsIgnoreCase(movie.getTitle()))) {
+        List<Movie> movies = movieRepo.findAll();
+        if (movies.stream().anyMatch(m -> m.getTitle().equalsIgnoreCase(movie.getTitle()))) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         movieRepo.save(movie);
@@ -35,7 +37,7 @@ public class MovieService {
     }
 
     public List<Movie> getMoviesByReleaseYear(int releaseYear) {
-        return movieRepo.findAll().stream().filter(m -> m.getReleaseYear() == releaseYear).toList();
+        return movieRepo.findByReleaseYearEquals(releaseYear);
     }
 
     public String updateMovie(Movie movie, Long id) {

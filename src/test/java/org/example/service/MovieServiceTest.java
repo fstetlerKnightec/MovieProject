@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
@@ -48,6 +49,37 @@ public class MovieServiceTest {
         ResponseEntity<Movie> addMovie = movieService.addMovie(movie1);
 
         Assertions.assertEquals(addMovie.getStatusCode(), HttpStatus.CONFLICT);
+    }
+
+    @Test
+    public void MovieService_GetMovies_ReturnsMovies() {
+        Movie movie1 = new Movie(1L, "Golden Eye", 1999);
+        Movie movie2 = new Movie(2L, "A New Hope", 1977);
+        List<Movie> movies = new ArrayList<>(Arrays.asList(movie1, movie2));
+
+        when(movieRepo.findAll()).thenReturn(movies);
+        List<Movie> movieList = movieService.getMovies();
+
+        Assertions.assertNotNull(movieList);
+        Assertions.assertEquals(movieList.get(0).getTitle(), "Golden Eye");
+    }
+
+    @Test
+    public void MovieService_GetMovieById_ReturnMovie() {
+        Movie movie = new Movie(1L, "Golden Eye", 1999);
+
+        when(movieRepo.findById(1L)).thenReturn(Optional.of(movie));
+        Movie foundMovie = movieService.getMovieById(1L).getBody();
+
+        Assertions.assertEquals(foundMovie.getTitle(), "Golden Eye");
+    }
+
+    @Test
+    public void MovieService_GetMovieByNonExistentId_ReturnEmpty() {
+        when(movieRepo.findById(1L)).thenReturn(Optional.empty());
+        HttpStatusCode foundMovieCode = movieService.getMovieById(1L).getStatusCode();
+
+        Assertions.assertEquals(foundMovieCode, HttpStatus.NOT_FOUND);
     }
 
     @Test

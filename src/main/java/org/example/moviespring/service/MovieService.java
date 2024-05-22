@@ -22,8 +22,11 @@ public class MovieService {
         return movieRepo.findAll();
     }
 
-    public Optional<Movie> getMovieById(Long id) {
-        return movieRepo.findById(id);
+    public ResponseEntity<Movie> getMovieById(Long id) {
+        Optional<Movie> foundMovie = movieRepo.findById(id);
+        return foundMovie.map(
+                movie -> ResponseEntity.status(HttpStatus.OK).body(movie)).orElseGet(
+                () -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     public ResponseEntity<Movie> addMovie(Movie movie) {

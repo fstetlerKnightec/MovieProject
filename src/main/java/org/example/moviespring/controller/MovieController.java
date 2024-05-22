@@ -26,8 +26,7 @@ public class MovieController {
 
     @GetMapping("/getMovie/{id}")
     public ResponseEntity<Movie> getMovie(@PathVariable Long id) {
-        Optional<Movie> movieOptional = movieService.getMovieById(id);
-        return movieOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return movieService.getMovieById(id);
     }
 
     @GetMapping("/getMoviesByReleaseYear/{releaseYear}")

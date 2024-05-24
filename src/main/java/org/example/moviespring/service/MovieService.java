@@ -25,7 +25,7 @@ public class MovieService {
     }
 
     public Optional<Movie> getMovieByTitle(String title) {
-        return movieRepo.findByTitle(title);
+        return movieRepo.findByTitleIgnoreCase(title);
     }
 
     public Movie addMovie(Movie movie) {

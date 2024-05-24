@@ -2,10 +2,12 @@ package org.example.moviespring.controller;
 
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.service.MovieService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1")
@@ -24,12 +26,18 @@ public class MovieController {
 
     @GetMapping("/getMovie/{id}")
     public ResponseEntity<Movie> getMovie(@PathVariable Long id) {
-        return movieService.getMovieById(id);
+        Optional<Movie> foundMovie = movieService.getMovieById(id);
+        return foundMovie
+                .map(m -> ResponseEntity.status(HttpStatus.OK).body(m))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/getMovieByTitle/{title}")
-    public ResponseEntity<Movie> getMovieByName(@PathVariable String title) {
-        return movieService.getMovieByTitle(title);
+    public ResponseEntity<Movie> getMovieByTitle(@PathVariable String title) {
+        Optional<Movie> foundMovie = movieService.getMovieByTitle(title);
+        return foundMovie
+            .map(movie -> ResponseEntity.status(HttpStatus.OK).body(movie))
+            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/getMoviesByReleaseYear/{releaseYear}")
@@ -39,16 +47,27 @@ public class MovieController {
 
     @PostMapping("/addMovie")
     public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
-        return movieService.addMovie(movie);
+        Optional<Movie> foundMovie = movieService.getMovieByTitle(movie.getTitle());
+        return foundMovie.map(m -> ResponseEntity.status(HttpStatus.CONFLICT).<Movie>build())
+                .orElseGet(() -> {
+                    movieService.addMovie(movie);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(movie);
+        });
     }
 
     @PutMapping("/updateMovie/{id}")
     public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
-        return movieService.updateMovie(movie, id);
+        Optional<Movie> foundMovie = movieService.updateMovieById(movie, id);
+        return foundMovie
+                .map(m -> ResponseEntity.status(HttpStatus.OK).body(foundMovie.get()))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @DeleteMapping("/deleteMovie/{id}")
     public ResponseEntity<Movie> deleteMovie(@PathVariable Long id) {
-        return movieService.deleteMovie(id);
+        Optional<Movie> foundMovie = movieService.deleteMovieById(id);
+        return foundMovie
+                .map(m -> ResponseEntity.status(HttpStatus.OK).body(foundMovie.get()))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

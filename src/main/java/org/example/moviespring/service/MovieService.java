@@ -2,8 +2,6 @@ package org.example.moviespring.service;
 
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.repo.MovieRepo;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,36 +20,25 @@ public class MovieService {
         return movieRepo.findAll();
     }
 
-    public ResponseEntity<Movie> getMovieById(Long id) {
-        Optional<Movie> foundMovie = movieRepo.findById(id);
-        return foundMovie
-                .map(movie -> ResponseEntity.status(HttpStatus.OK).body(movie))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public Optional<Movie> getMovieById(Long id) {
+        return movieRepo.findById(id);
     }
 
-    public ResponseEntity<Movie> getMovieByTitle(String title) {
-        Optional<Movie> foundMovie = movieRepo.findByTitle(title);
-        return foundMovie
-            .map(movie -> ResponseEntity.status(HttpStatus.OK).body(movie))
-            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public Optional<Movie> getMovieByTitle(String title) {
+        return movieRepo.findByTitle(title);
     }
 
-    public ResponseEntity<Movie> addMovie(Movie movie) {
-        Optional<Movie> foundMovie = movieRepo.findByTitle(movie.getTitle());
-        return foundMovie.map(m -> ResponseEntity.status(HttpStatus.CONFLICT).<Movie>build())
-                .orElseGet(() -> {
-                    movieRepo.save(movie);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(movie);
-                });
+    public Movie addMovie(Movie movie) {
+        return movieRepo.save(movie);
     }
 
     public List<Movie> getMoviesByReleaseYear(int releaseYear) {
         return movieRepo.findByReleaseYearEquals(releaseYear);
     }
 
-    public ResponseEntity<Movie> updateMovie(Movie movie, Long id) {
+    public Optional<Movie> updateMovieById(Movie movie, Long id) {
         if (movieRepo.findById(id).isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return Optional.empty();
         }
         Movie foundMovie = movieRepo.findById(id).get();
 
@@ -59,14 +46,15 @@ public class MovieService {
         foundMovie.setReleaseYear(movie.getReleaseYear());
 
         movieRepo.save(foundMovie);
-        return ResponseEntity.status(HttpStatus.OK).body(foundMovie);
+        return Optional.of(foundMovie);
     }
 
-    public ResponseEntity<Movie> deleteMovie(Long id) {
+    public Optional<Movie> deleteMovieById(Long id) {
         if (movieRepo.findById(id).isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return Optional.empty();
         }
+        Movie foundMovie = movieRepo.findById(id).get();
         movieRepo.deleteById(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return Optional.of(foundMovie);
     }
 }

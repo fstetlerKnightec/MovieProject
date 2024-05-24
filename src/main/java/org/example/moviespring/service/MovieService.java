@@ -37,10 +37,11 @@ public class MovieService {
     }
 
     public Optional<Movie> updateMovieById(Movie movie, Long id) {
-        if (movieRepo.findById(id).isEmpty()) {
+        Optional<Movie> movieById = movieRepo.findById(id);
+        if (movieById.isEmpty()) {
             return Optional.empty();
         }
-        Movie foundMovie = movieRepo.findById(id).get();
+        Movie foundMovie = movieById.get();
 
         foundMovie.setTitle(movie.getTitle());
         foundMovie.setReleaseYear(movie.getReleaseYear());
@@ -50,10 +51,11 @@ public class MovieService {
     }
 
     public Optional<Movie> deleteMovieById(Long id) {
-        if (movieRepo.findById(id).isEmpty()) {
+        Optional<Movie> movieById = movieRepo.findById(id);
+        if (movieById.isEmpty()) {
             return Optional.empty();
         }
-        Movie foundMovie = movieRepo.findById(id).get();
+        Movie foundMovie = movieById.get();
         movieRepo.deleteById(id);
         return Optional.of(foundMovie);
     }

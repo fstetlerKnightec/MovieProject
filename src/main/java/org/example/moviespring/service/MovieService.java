@@ -29,39 +29,44 @@ public class MovieService {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    public ResponseEntity<Movie> getMovieByTitle(String title) {
+        Optional<Movie> foundMovie = movieRepo.findByTitle(title);
+        return foundMovie
+            .map(movie -> ResponseEntity.status(HttpStatus.OK).body(movie))
+            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
     public ResponseEntity<Movie> addMovie(Movie movie) {
-        List<Movie> movies = movieRepo.findAll();
-        if (movies.stream().anyMatch(m -> m.getTitle().equalsIgnoreCase(movie.getTitle()))) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        movieRepo.save(movie);
-        return ResponseEntity.status(HttpStatus.CREATED).body(movie);
+        Optional<Movie> foundMovie = movieRepo.findByTitle(movie.getTitle());
+        return foundMovie.map(m -> ResponseEntity.status(HttpStatus.CONFLICT).<Movie>build())
+                .orElseGet(() -> {
+                    movieRepo.save(movie);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(movie);
+                });
     }
 
     public List<Movie> getMoviesByReleaseYear(int releaseYear) {
         return movieRepo.findByReleaseYearEquals(releaseYear);
     }
 
-    public String updateMovie(Movie movie, Long id) {
+    public ResponseEntity<Movie> updateMovie(Movie movie, Long id) {
         if (movieRepo.findById(id).isEmpty()) {
-            return "Could not find movie with id " + id;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         Movie foundMovie = movieRepo.findById(id).get();
-        String movieNameOrig = foundMovie.getTitle();
 
         foundMovie.setTitle(movie.getTitle());
         foundMovie.setReleaseYear(movie.getReleaseYear());
 
         movieRepo.save(foundMovie);
-        return "Successfully updated movie with name " + movieNameOrig;
+        return ResponseEntity.status(HttpStatus.OK).body(foundMovie);
     }
 
-    public String deleteMovie(Long id) {
+    public ResponseEntity<Movie> deleteMovie(Long id) {
         if (movieRepo.findById(id).isEmpty()) {
-            return "Could not find a movie with that ID";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        String name = movieRepo.findById(id).get().getTitle();
         movieRepo.deleteById(id);
-        return "Successfully deleted movie with name " + name;
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

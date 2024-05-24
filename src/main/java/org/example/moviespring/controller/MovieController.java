@@ -27,6 +27,11 @@ public class MovieController {
         return movieService.getMovieById(id);
     }
 
+    @GetMapping("/getMovieByTitle/{title}")
+    public ResponseEntity<Movie> getMovieByName(@PathVariable String title) {
+        return movieService.getMovieByTitle(title);
+    }
+
     @GetMapping("/getMoviesByReleaseYear/{releaseYear}")
     public List<Movie> getMoviesByReleaseYear(@PathVariable int releaseYear) {
         return movieService.getMoviesByReleaseYear(releaseYear);
@@ -38,12 +43,12 @@ public class MovieController {
     }
 
     @PutMapping("/updateMovie/{id}")
-    public String updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
+    public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable Long id) {
         return movieService.updateMovie(movie, id);
     }
 
     @DeleteMapping("/deleteMovie/{id}")
-    public String deleteMovie(@PathVariable Long id) {
+    public ResponseEntity<Movie> deleteMovie(@PathVariable Long id) {
         return movieService.deleteMovie(id);
     }
 }

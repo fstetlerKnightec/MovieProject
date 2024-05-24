@@ -32,7 +32,6 @@ public class MovieServiceTest {
         Movie movie = new Movie(1L, "Golden Eye", 1999);
 
         when(movieRepo.save(Mockito.any(Movie.class))).thenReturn(movie);
-
         ResponseEntity<Movie> savedMovie = movieService.addMovie(movie);
 
         Assertions.assertEquals(Objects.requireNonNull(savedMovie.getBody()).getId(), 1L);
@@ -43,9 +42,8 @@ public class MovieServiceTest {
     @Test
     public void MovieService_PostMovieToRepoAlreadyExists_ReturnsHttpStatusConflict() {
         Movie movie1 = new Movie(1L, "Golden Eye", 1999);
-        List<Movie> movies = new ArrayList<>(List.of(movie1));
 
-        when(movieRepo.findAll()).thenReturn(movies);
+        when(movieRepo.findByTitle("Golden Eye")).thenReturn(Optional.of(movie1));
         ResponseEntity<Movie> addMovie = movieService.addMovie(movie1);
 
         Assertions.assertEquals(addMovie.getStatusCode(), HttpStatus.CONFLICT);
@@ -89,9 +87,9 @@ public class MovieServiceTest {
 
         when(movieRepo.findById(1L)).thenReturn(Optional.of(movie1));
         when(movieRepo.save(Mockito.any(Movie.class))).thenReturn(movie1);
-        String updatedMovie = movieService.updateMovie(movie2, 1L);
+        ResponseEntity<Movie> updatedMovie = movieService.updateMovie(movie2, 1L);
 
-        Assertions.assertEquals("Successfully updated movie with name Golden Eye", updatedMovie);
+        Assertions.assertEquals(ResponseEntity.status(HttpStatus.OK).body(movie1), updatedMovie);
     }
 
     @Test
@@ -99,26 +97,26 @@ public class MovieServiceTest {
         Movie movie2 = new Movie(2L, "A New Hope", 1977);
 
         when(movieRepo.findById(3L)).thenReturn(Optional.empty());
-        String updatedMovie = movieService.updateMovie(movie2, 3L);
+        ResponseEntity<Movie> updatedMovie = movieService.updateMovie(movie2, 3L);
 
-        Assertions.assertEquals(updatedMovie, "Could not find movie with id 3");
+        Assertions.assertEquals(ResponseEntity.status(HttpStatus.NOT_FOUND).build(), updatedMovie);
     }
 
     @Test
-    public void MovieService_DeleteMovieById_ReturnVoid() {
+    public void MovieService_DeleteMovieById_ReturnSuccess() {
         Movie movie1 = new Movie(1L, "Golden Eye", 1999);
 
         when(movieRepo.findById(1L)).thenReturn(Optional.of(movie1));
-        String movieString = movieService.deleteMovie(1L);
+        ResponseEntity<Movie> deletedMovie = movieService.deleteMovie(1L);
 
-        Assertions.assertEquals(movieString, "Successfully deleted movie with name Golden Eye");
+        Assertions.assertEquals(ResponseEntity.status(HttpStatus.OK).build(), deletedMovie);
     }
 
     @Test
     public void MovieService_DeleteMovieByNonExistentId_ReturnNotFoundString() {
         when(movieRepo.findById(1L)).thenReturn(Optional.empty());
-        String movieString = movieService.deleteMovie(1L);
+        ResponseEntity<Movie> deletedMovie = movieService.deleteMovie(1L);
 
-        Assertions.assertEquals(movieString, "Could not find a movie with that ID");
+        Assertions.assertEquals(ResponseEntity.status(HttpStatus.NOT_FOUND).build(), deletedMovie);
     }
 }

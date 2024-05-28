@@ -2,6 +2,8 @@ package org.example.moviespring.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "MOVIES")
 public class Movie {
@@ -13,6 +15,18 @@ public class Movie {
     private String title;
 
     private int releaseYear;
+
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
+    }
+
+    @ManyToMany
+    private List<Actor> actors;
 
     public Movie() {
     }

@@ -27,7 +27,6 @@ public class MovieController {
     @GetMapping("/getMovie/{id}")
     public ResponseEntity<Movie> getMovie(@PathVariable Long id) {
         Optional<Movie> foundMovie = movieService.getMovieById(id);
-        System.out.println(foundMovie.get().getActors().size());
         return foundMovie
                 .map(m -> ResponseEntity.status(HttpStatus.OK).body(m))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());

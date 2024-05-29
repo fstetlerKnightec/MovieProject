@@ -25,7 +25,7 @@ public class Movie {
         this.actors = actors;
     }
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Actor> actors;
 
     public Movie() {

@@ -1,10 +1,6 @@
 package org.example.moviespring.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.moviespring.DTOs.ActorDTO;
-import org.example.moviespring.model.Actor;
 import org.example.moviespring.model.Movie;
-import org.example.moviespring.repo.ActorRepo;
 import org.example.moviespring.repo.MovieRepo;
 import org.springframework.stereotype.Service;
 

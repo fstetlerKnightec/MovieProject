@@ -1,9 +1,7 @@
 package org.example.moviespring.controller;
 
-import org.example.moviespring.DTOs.ActorDTO;
 import org.example.moviespring.DTOs.DTOConverter;
 import org.example.moviespring.DTOs.MovieDTO;
-import org.example.moviespring.model.Actor;
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.service.MovieService;
 import org.springframework.http.HttpStatus;

@@ -5,7 +5,9 @@ import java.util.List;
 public class ActorDTO {
 
     private Long id;
+
     private String name;
+
     private List<SimpleMovieDTO> movies;
 
     public Long getId() {
@@ -24,11 +26,11 @@ public class ActorDTO {
         this.name = name;
     }
 
-    public List<SimpleMovieDTO> getMovies() {
-        return movies;
-    }
-
     public void setMovies(List<SimpleMovieDTO> movies) {
         this.movies = movies;
+    }
+
+    public List<SimpleMovieDTO> getMovies() {
+        return movies;
     }
 }

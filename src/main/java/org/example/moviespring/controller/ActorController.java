@@ -1,6 +1,11 @@
 package org.example.moviespring.controller;
 
+
+import org.example.moviespring.DTOs.ActorDTO;
+import org.example.moviespring.DTOs.DTOConverter;
+import org.example.moviespring.DTOs.MovieDTO;
 import org.example.moviespring.model.Actor;
+import org.example.moviespring.model.Movie;
 import org.example.moviespring.service.ActorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +30,19 @@ public class ActorController {
     }
 
     @GetMapping("/getActor/{id}")
-    public ResponseEntity<Actor> getActor(@PathVariable Long id) {
-        Optional<Actor> foundActor = actorService.getActorById(id);
-        return foundActor
-                .map(a -> ResponseEntity.status(HttpStatus.OK).body(a))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ResponseEntity<ActorDTO> getActor(@PathVariable Long id) {
+        Optional<Actor> actor = actorService.getActorById(id);
+        if (actor.isPresent()) {
+            ActorDTO actorDTO = DTOConverter.convertToActorDTO(actor.get());
+            return ResponseEntity.ok(actorDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+//        Optional<Actor> foundActor = actorService.getActorById(id);
+//        return foundActor
+//                .map(a -> ResponseEntity.status(HttpStatus.OK).body(a))
+//                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/getActorByName/{name}")

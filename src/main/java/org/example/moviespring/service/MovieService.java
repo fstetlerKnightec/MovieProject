@@ -1,5 +1,6 @@
 package org.example.moviespring.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.repo.MovieRepo;
 import org.springframework.stereotype.Service;

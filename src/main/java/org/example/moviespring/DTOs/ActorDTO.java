@@ -4,6 +4,10 @@ import java.util.List;
 
 public class ActorDTO {
 
+    private Long id;
+    private String name;
+    private List<SimpleMovieDTO> movies;
+
     public Long getId() {
         return id;
     }
@@ -27,8 +31,4 @@ public class ActorDTO {
     public void setMovies(List<SimpleMovieDTO> movies) {
         this.movies = movies;
     }
-
-    private Long id;
-    private String name;
-    private List<SimpleMovieDTO> movies;
 }

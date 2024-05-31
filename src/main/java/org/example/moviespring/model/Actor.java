@@ -1,6 +1,7 @@
 package org.example.moviespring.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class Actor {
     @JoinTable(name = "MOVIES_ACTORS",
                joinColumns = @JoinColumn(name = "ACTORS_ID", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "MOVIE_ID", referencedColumnName = "id"))
-//    @JsonManagedReference
+    @Nullable
     private List<Movie> movies;
 
     public Actor() {

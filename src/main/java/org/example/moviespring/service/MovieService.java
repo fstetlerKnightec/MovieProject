@@ -1,7 +1,9 @@
 package org.example.moviespring.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.moviespring.DTOs.ActorDTO;
 import org.example.moviespring.model.Movie;
+import org.example.moviespring.repo.ActorRepo;
 import org.example.moviespring.repo.MovieRepo;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,7 @@ public class MovieService {
 
         foundMovie.setTitle(movie.getTitle());
         foundMovie.setReleaseYear(movie.getReleaseYear());
+        foundMovie.setActors(movie.getActors());
 
         movieRepo.save(foundMovie);
         return Optional.of(foundMovie);

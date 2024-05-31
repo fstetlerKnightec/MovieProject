@@ -25,8 +25,8 @@ public class ActorController {
     }
 
     @GetMapping("/getActors")
-    public List<Actor> getActors() {
-        return actorService.getActors();
+    public List<ActorDTO> getActors() {
+        return actorService.getActors().stream().map(DTOConverter::convertToActorDTO).toList();
     }
 
     @GetMapping("/getActor/{id}")
@@ -38,38 +38,32 @@ public class ActorController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
-//        Optional<Actor> foundActor = actorService.getActorById(id);
-//        return foundActor
-//                .map(a -> ResponseEntity.status(HttpStatus.OK).body(a))
-//                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @GetMapping("/getActorByName/{name}")
-    public ResponseEntity<Actor> getActorByTitle(@PathVariable String name) {
+    public ResponseEntity<ActorDTO> getActorByTitle(@PathVariable String name) {
         Optional<Actor> foundActor = actorService.getActorByTitle(name);
         return foundActor
-                .map(actor -> ResponseEntity.status(HttpStatus.OK).body(actor))
+                .map(actor -> ResponseEntity.status(HttpStatus.OK).body(DTOConverter.convertToActorDTO(actor)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PostMapping("/addActor")
-    public ResponseEntity<Actor> addActor(@RequestBody Actor actor) {
+    public ResponseEntity<ActorDTO> addActor(@RequestBody Actor actor) {
         Optional<Actor> foundActor = actorService.getActorByTitle(actor.getName());
         return foundActor
-                .map(a -> ResponseEntity.status(HttpStatus.CONFLICT).<Actor>build())
+                .map(a -> ResponseEntity.status(HttpStatus.CONFLICT).<ActorDTO>build())
                 .orElseGet(() -> {
                     actorService.addActor(actor);
-                    return ResponseEntity.status(HttpStatus.CREATED).body(actor);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(DTOConverter.convertToActorDTO(actor));
                 });
     }
 
     @DeleteMapping("/deleteActor/{id}")
-    public ResponseEntity<Actor> deleteActor(@PathVariable Long id) {
+    public ResponseEntity<ActorDTO> deleteActor(@PathVariable Long id) {
         Optional<Actor> foundActor = actorService.deleteActorById(id);
-        System.out.println("Hej där");
         return foundActor
-                .map(a -> ResponseEntity.status(HttpStatus.OK).body(foundActor.get()))
+                .map(a -> ResponseEntity.status(HttpStatus.OK).body(DTOConverter.convertToActorDTO(a)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

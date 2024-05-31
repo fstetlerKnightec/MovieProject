@@ -10,9 +10,12 @@ public class DTOConverter {
         MovieDTO movieDTO = new MovieDTO();
         movieDTO.setId(movie.getId());
         movieDTO.setTitle(movie.getTitle());
-        movieDTO.setActors(movie.getActors().stream()
-                .map(DTOConverter::convertToSimpleActorDTO)
-                .collect(Collectors.toList()));
+        movieDTO.setReleaseYear(movie.getReleaseYear());
+        if (movie.getActors() != null) {
+            movieDTO.setActors(movie.getActors().stream()
+                    .map(DTOConverter::convertToSimpleActorDTO)
+                    .collect(Collectors.toList()));
+        }
         return movieDTO;
     }
 
@@ -20,9 +23,11 @@ public class DTOConverter {
         ActorDTO actorDTO = new ActorDTO();
         actorDTO.setId(actor.getId());
         actorDTO.setName(actor.getName());
-        actorDTO.setMovies(actor.getMovies().stream()
-                .map(DTOConverter::convertToSimpleMovieDTO)
-                .collect(Collectors.toList()));
+        if (actor.getMovies() != null) {
+            actorDTO.setMovies(actor.getMovies().stream()
+                    .map(DTOConverter::convertToSimpleMovieDTO)
+                    .collect(Collectors.toList()));
+        }
         return actorDTO;
     }
 

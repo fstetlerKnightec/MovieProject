@@ -1,6 +1,9 @@
 package org.example.moviespring.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "MOVIES")
@@ -13,6 +16,10 @@ public class Movie {
     private String title;
 
     private int releaseYear;
+
+    @ManyToMany(mappedBy = "movies", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JsonBackReference
+    private List<Actor> actors;
 
     public Movie() {
     }
@@ -37,6 +44,14 @@ public class Movie {
 
     public int getReleaseYear() {
         return releaseYear;
+    }
+
+    public List<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(List<Actor> actors) {
+        this.actors = actors;
     }
 
     public void setReleaseYear(int releaseYear) {

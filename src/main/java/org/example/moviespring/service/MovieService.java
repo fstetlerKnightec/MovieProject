@@ -1,5 +1,6 @@
 package org.example.moviespring.service;
 
+import jakarta.transaction.Transactional;
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.repo.MovieRepo;
 import org.springframework.stereotype.Service;
@@ -8,9 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class MovieService {
 
     private final MovieRepo movieRepo;
+
 
     public MovieService(MovieRepo movieRepo) {
         this.movieRepo = movieRepo;
@@ -38,6 +41,9 @@ public class MovieService {
 
     public Optional<Movie> updateMovieById(Movie movie, Long id) {
         Optional<Movie> movieById = movieRepo.findById(id);
+
+
+
         if (movieById.isEmpty()) {
             return Optional.empty();
         }
@@ -45,6 +51,8 @@ public class MovieService {
 
         foundMovie.setTitle(movie.getTitle());
         foundMovie.setReleaseYear(movie.getReleaseYear());
+        foundMovie.setActors(movie.getActors());
+
 
         movieRepo.save(foundMovie);
         return Optional.of(foundMovie);

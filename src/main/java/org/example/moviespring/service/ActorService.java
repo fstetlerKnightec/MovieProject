@@ -1,6 +1,8 @@
 package org.example.moviespring.service;
 
+import jakarta.transaction.Transactional;
 import org.example.moviespring.model.Actor;
+import org.example.moviespring.model.Movie;
 import org.example.moviespring.repo.ActorRepo;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ActorService {
 
     private final ActorRepo actorRepo;
@@ -42,6 +45,18 @@ public class ActorService {
         return Optional.of(foundActor);
     }
 
+    public Optional<Actor> updateActorById(Actor actor, Long id) {
+        Optional<Actor> actorById = actorRepo.findById(id);
 
+        if (actorById.isEmpty()) {
+            return Optional.empty();
+        }
+        Actor foundActor = actorById.get();
 
+        foundActor.setName(actor.getName());
+        foundActor.setMovie(actor.getMovies());
+
+        actorRepo.save(foundActor);
+        return Optional.of(foundActor);
+    }
 }

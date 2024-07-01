@@ -1,5 +1,6 @@
 package org.example.moviespring.service;
 
+import jakarta.transaction.Transactional;
 import org.example.moviespring.model.Movie;
 import org.example.moviespring.repo.MovieRepo;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class MovieService {
 
     private final MovieRepo movieRepo;

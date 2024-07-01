@@ -64,5 +64,13 @@ public class ActorController {
                 .map(a -> ResponseEntity.status(HttpStatus.OK).body(DTOConverter.convertToActorDTO(a)))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
+    @PutMapping("/updateActor/{id}")
+    public ResponseEntity<ActorDTO> updateActor(@RequestBody Actor actor, @PathVariable Long id) {
+        Optional<Actor> foundActor = actorService.updateActorById(actor, id);
+        return foundActor
+                .map(a -> ResponseEntity.status(HttpStatus.OK).body(DTOConverter.convertToActorDTO(a)))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
 }
 

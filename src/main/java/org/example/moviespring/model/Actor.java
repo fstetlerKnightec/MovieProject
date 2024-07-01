@@ -1,7 +1,6 @@
 package org.example.moviespring.model;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity

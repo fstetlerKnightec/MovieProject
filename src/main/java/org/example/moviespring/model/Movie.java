@@ -17,7 +17,7 @@ public class Movie {
 
     private int releaseYear;
 
-    @ManyToMany(mappedBy = "movies")
+    @ManyToMany(mappedBy = "movies", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JsonBackReference
     private List<Actor> actors;
 
